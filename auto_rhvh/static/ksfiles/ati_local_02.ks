@@ -73,16 +73,7 @@ kernel=${kernel#*=}
 grubby --args=crashkernel=250 --update-kernel $kernel
 }
 
-coverage_check(){
-easy_install coverage
-cd /usr/lib/python2.7/site-packages/
-coverage run -p -m --branch --source=imgbased imgbased layout --init
-mkdir /boot/coverage
-cp .coverage* /boot/coverage
-}
-
-coverage_check
-#imgbase layout --init
+imgbase layout --init
 grubby_test
 compose_expected_data
 %end

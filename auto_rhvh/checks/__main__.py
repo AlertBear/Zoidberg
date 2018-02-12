@@ -42,6 +42,8 @@ def check(module_name):
     ck.ksfile = KSFILE
     ck.remotecmd = RemoteCmd(HOST_IP, 'root', 'redhat')
     ck.casesmap = CasesMap(TEST_LEVEL)
+    ck.host_string = HOST_IP
+    ck.host_pass = 'redhat'
 
     print ck.go_check()
 

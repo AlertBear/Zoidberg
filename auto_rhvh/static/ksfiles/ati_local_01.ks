@@ -138,15 +138,6 @@ with open(EXPECTED_DATA_FILE, 'wb') as json_file:
 ES
 }
 
-coverage_check(){
-easy_install coverage
-cd /usr/lib/python2.7/site-packages/
-coverage run -p -m --branch --source=imgbased imgbased layout --init
-mkdir /boot/coverage
-cp .coverage* /boot/coverage
-}
-
-coverage_check
-#imgbase layout --init
+imgbase layout --init
 compose_expected_data
 %end

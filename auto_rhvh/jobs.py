@@ -7,10 +7,9 @@ import os
 from .kickstarts import KickStartFiles
 from .beaker import Beaker, inst_watcher
 from .cobbler import Cobbler
-from .constants import CURRENT_IP_PORT, ARGS_TPL, CB_PROFILE, COVERAGE_TEST
+from .constants import CURRENT_IP_PORT, ARGS_TPL, CB_PROFILE
 from .util_result_index import cache_logs_summary
 from reports import ResultsToPolarion
-from coverage import upload_coverage_raw_res_from_host, generate_final_coverage_result
 from checks import HOSTS
 from checks import CheckInstall, CheckUpgrade, CheckVdsm, RemoteCmd
 
@@ -146,20 +145,13 @@ class JobRunner(object):
 
                         log.info(ck.go_check())
 
-                        if ks.find("ati") == 0 and COVERAGE_TEST:
-                            upload_coverage_raw_res_from_host(ck)
-
-                            # TODO wati for cockpit new results format
+                        # TODO wati for cockpit new results format
                 else:
                     log.error(
                         "provisioning on host %s failed with return code %s",
                         m, ret)
 
         self.generate_final_results()
-
-        if ks.find("ati") == 0 and COVERAGE_TEST:
-            generate_final_coverage_result(ck, self.build_url.split('/')[-2])
-
         cache_logs_summary()
         self.rd_conn.set("running", "0")
 
@@ -185,6 +177,8 @@ class JobRunner(object):
         ck.ksfile = ks
         ck.remotecmd = RemoteCmd(host_ip, 'root', 'redhat')
         ck.casesmap = self.casesmap
+        ck.host_string = host_ip
+        ck.host_pass = 'redhat'
 
         return ck
 
